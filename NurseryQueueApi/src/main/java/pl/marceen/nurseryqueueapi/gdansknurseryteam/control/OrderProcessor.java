@@ -2,7 +2,6 @@ package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.marceen.network.control.HttpExcecutor;
@@ -10,10 +9,11 @@ import pl.marceen.network.control.RequestBuilder;
 import pl.marceen.network.entity.NetworkException;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.DecodedData;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
 
 import javax.inject.Inject;
 import javax.json.bind.JsonbBuilder;
-import java.nio.charset.StandardCharsets;
+import javax.json.bind.JsonbException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,34 +23,46 @@ import java.util.regex.Pattern;
 public class OrderProcessor {
     private static final Logger logger = LoggerFactory.getLogger(OrderProcessor.class);
 
+    private static final Pattern PATTERN = Pattern.compile("^(\\{\"alg\":\"HS256\",\"typ\":\"JWS\"})(\\{.*})");
+
     @Inject
     private RequestBuilder requestBuilder;
 
     @Inject
     private HttpExcecutor<OrderResponse> httpExcecutor;
 
-    public OrderResponse process(OkHttpClient client, String token) throws NetworkException {
-        Base64 base64 = new Base64();
-        byte[] bytes = base64.decode(token);
-        String decodedDataAsString = new String(bytes, StandardCharsets.UTF_8);
-        logger.info("Decoded base64: {}", decodedDataAsString);
+    @Inject
+    private Base64Decoder base64Decoder;
 
-        Pattern pattern = Pattern.compile("^(\\{\"alg\":\"HS256\",\"typ\":\"JWS\"})(\\{.*})");
-        Matcher matcher = pattern.matcher(decodedDataAsString);
-
-        if (!matcher.find()) {
-            logger.error("Problem with decoding base64");
-            return null;
-        }
-
-        String raw = matcher.group(2);
-        logger.info("raw: {}", raw);
-
-        DecodedData decodedData = JsonbBuilder.create().fromJson(raw, DecodedData.class);
+    public OrderResponse process(OkHttpClient client, String token) throws NetworkException, ParserException {
+        DecodedData decodedData = getDecodedData(token);
         logger.info(decodedData.toString());
 
         Request request = requestBuilder.buildRequestForOrder(token, decodedData.getApplicationId());
 
         return httpExcecutor.execute(OrderResponse.class, client, request);
+    }
+
+    private DecodedData getDecodedData(String token) throws ParserException {
+        logger.info("Try to get decoded data");
+
+        Matcher matcher = PATTERN.matcher(base64Decoder.decode(token));
+
+        if (!matcher.find()) {
+            throw ParserException.decodedDataNotFound(logger);
+        }
+
+        String decodedDataAsJson = matcher.group(2);
+        logger.info("Decoded data as Json: {}", decodedDataAsJson);
+
+        return convertToDecodedData(decodedDataAsJson);
+    }
+
+    private DecodedData convertToDecodedData(String json) throws ParserException {
+        try {
+            return JsonbBuilder.create().fromJson(json, DecodedData.class);
+        } catch (JsonbException e) {
+            throw ParserException.decodedDataNotFound(logger);
+        }
     }
 }

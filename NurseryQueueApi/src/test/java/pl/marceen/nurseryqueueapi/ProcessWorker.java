@@ -14,11 +14,9 @@ import org.slf4j.LoggerFactory;
 import pl.marceen.network.control.HttpExcecutor;
 import pl.marceen.network.control.RequestBuilder;
 import pl.marceen.network.entity.NetworkException;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.DictionaryProcessor;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.LoginProcessor;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.LoginRequestBuilder;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.OrderProcessor;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.*;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
 
 /**
  * @author Marcin Zaremba
@@ -41,6 +39,9 @@ public class ProcessWorker {
     @Mock(answer = Answers.CALLS_REAL_METHODS)
     private HttpExcecutor<LoginResponse> httpExcecutor;
 
+    @Mock(answer = Answers.CALLS_REAL_METHODS)
+    private Base64Decoder base64Decoder;
+
     @InjectMocks
     private LoginProcessor loginProcessor;
 
@@ -52,7 +53,7 @@ public class ProcessWorker {
 
     @Test
     @Ignore
-    public void process() throws NetworkException {
+    public void process() throws NetworkException, ParserException {
         logger.info("Process START");
 
         OkHttpClient client = new OkHttpClient();
