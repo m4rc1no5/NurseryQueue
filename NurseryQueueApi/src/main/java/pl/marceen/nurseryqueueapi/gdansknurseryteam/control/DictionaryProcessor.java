@@ -4,9 +4,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.marceen.network.control.HttpExcecutor;
-import pl.marceen.network.control.RequestBuilder;
-import pl.marceen.network.entity.NetworkException;
+import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
+import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
+import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.DictionaryResponse;
 
 import javax.inject.Inject;

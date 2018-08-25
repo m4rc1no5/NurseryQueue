@@ -1,4 +1,4 @@
-package pl.marceen.network.control;
+package pl.marceen.nurseryqueueapi.network.control;
 
 import okhttp3.MediaType;
 import okhttp3.Request;

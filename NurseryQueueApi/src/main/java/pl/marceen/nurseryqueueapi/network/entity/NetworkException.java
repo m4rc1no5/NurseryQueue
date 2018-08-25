@@ -1,4 +1,4 @@
-package pl.marceen.network.entity;
+package pl.marceen.nurseryqueueapi.network.entity;
 
 import org.slf4j.Logger;
 
