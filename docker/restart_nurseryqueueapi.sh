@@ -9,7 +9,7 @@ echo -e "Update NurseryQueueApi war..."
 cp -f ../NurseryQueueApi/target/NurseryQueueApi.war NurseryQueueApi/NurseryQueueApi.war
 
 # restart
-docker-compose stop -t 1 nursery1ueueapi
-docker-compose build nursery1ueueapi
-docker-compose create nursery1ueueapi
-docker-compose start nursery1ueueapi
+docker-compose stop -t 1 nurseryqueueapi
+docker-compose build nurseryqueueapi
+docker-compose create nurseryqueueapi
+docker-compose start nurseryqueueapi

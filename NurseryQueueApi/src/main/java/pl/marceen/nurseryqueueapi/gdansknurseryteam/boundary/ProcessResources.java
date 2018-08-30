@@ -44,7 +44,7 @@ public class ProcessResources {
 
     @GET
     @Path("check-order/{login}/{password}")
-    public OrderResponse checkOrder(@PathParam("login") String login, @PathParam("password") String password) throws NetworkException, ParserException {
+    public String checkOrder(@PathParam("login") String login, @PathParam("password") String password) throws NetworkException, ParserException {
         OkHttpClient client = new OkHttpClient();
 
         logger.info("Login");
@@ -57,6 +57,8 @@ public class ProcessResources {
         dictionaryProcessor.process(client, token);
 
         logger.info("Getting order");
-        return orderProcessor.process(client, token);
+        OrderResponse orderResponse = orderProcessor.process(client, token);
+
+        return orderResponse.getFirstNurseryName() + " - " + orderResponse.getFirstNurseryStanding();
     }
 }

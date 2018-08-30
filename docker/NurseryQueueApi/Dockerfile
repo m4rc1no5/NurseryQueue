@@ -1,5 +1,5 @@
 FROM jboss/wildfly:13.0.0.Final
-MAINTAINER marcin.zaremba@gmail.pl
+MAINTAINER marcin.zaremba@gmail.com
 
 USER root
 
