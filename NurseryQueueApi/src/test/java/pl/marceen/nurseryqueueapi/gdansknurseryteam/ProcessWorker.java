@@ -1,4 +1,4 @@
-package pl.marceen.nurseryqueueapi;
+package pl.marceen.nurseryqueueapi.gdansknurseryteam;
 
 import okhttp3.OkHttpClient;
 import org.junit.Ignore;
@@ -11,21 +11,20 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
-import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
-import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
+import pl.marceen.nurseryqueueapi.FileReader;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.*;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
+import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
+import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
+
+import javax.json.bind.JsonbBuilder;
 
 /**
  * @author Marcin Zaremba
  */
 public class ProcessWorker {
     private static final Logger logger = LoggerFactory.getLogger(ProcessWorker.class);
-
-    private static final String LOGIN = "";
-    private static final String PASSWORD = "";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -53,13 +52,16 @@ public class ProcessWorker {
 
     @Test
     @Ignore
-    public void process() throws NetworkException, ParserException {
+    public void process() throws Exception {
         logger.info("Process START");
+
+        String json = FileReader.read(getClass(), "config/gdansk_nursery_team.yaml");
+        GdanskNurseryTeamConfig gdanskNurseryTeamConfig = convertConfig(json);
 
         OkHttpClient client = new OkHttpClient();
 
         logger.info("Login");
-        LoginResponse loginResponse = loginProcessor.login(client, LOGIN, PASSWORD);
+        LoginResponse loginResponse = loginProcessor.login(client, gdanskNurseryTeamConfig.getLogin(), gdanskNurseryTeamConfig.getPassword());
 
         String token = loginResponse.getToken();
         logger.info("Token: {}", token);
@@ -68,8 +70,17 @@ public class ProcessWorker {
         dictionaryProcessor.process(client, token);
 
         logger.info("Getting order");
-        orderProcessor.process(client, token);
+        OrderResponse orderResponse = orderProcessor.process(client, token);
+        logger.info("nursery #1: {} - {}", orderResponse.getFirstNurseryName(), orderResponse.getFirstNurseryStanding());
+        logger.info("nursery #2: {} - {}", orderResponse.getSecondNurseryName(), orderResponse.getSecondNurseryStanding());
+        logger.info("nursery #3: {} - {}", orderResponse.getThirdNurseryName(), orderResponse.getThirdNurseryStanding());
 
         logger.info("Process STOP");
+    }
+
+    private GdanskNurseryTeamConfig convertConfig(String json) {
+        logger.info("Try to convert json {} to GdanskNurseryTeamConfig", json);
+
+        return JsonbBuilder.create().fromJson(json, GdanskNurseryTeamConfig.class);
     }
 }

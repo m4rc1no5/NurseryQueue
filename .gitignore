@@ -11,3 +11,4 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
+/NurseryQueueApi/src/test/resources/config/gdansk_nursery_team.yaml
