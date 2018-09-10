@@ -1,0 +1,4 @@
+flyway.url=jdbc:postgresql://10.0.75.2:5432/database_name
+flyway.user=
+flyway.password=
+flyway.schemas=public

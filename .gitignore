@@ -12,3 +12,5 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 /NurseryQueueApi/src/test/resources/config/gdansk_nursery_team.yaml
+/docker/NurseryQueueApi/standalone.xml
+/NurseryQueueApi/config/flyway/docker.conf

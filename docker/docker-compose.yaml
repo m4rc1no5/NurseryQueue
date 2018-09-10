@@ -1,16 +1,5 @@
 version: '3.3'
 services:
-  apache:
-    build:
-      context: ./Apache
-    image: nurseryqueueapi/apache
-    container_name: nurseryqueueapi_apache
-    environment:
-      - MODCLUSTER_PORT=9999
-      - MODCLUSTER_ADVERTISE=Off
-    ports:
-     - "23364:23364"
-     - "9999:9999"
   nurseryqueueapi:
     build:
       context: ./NurseryQueueApi
