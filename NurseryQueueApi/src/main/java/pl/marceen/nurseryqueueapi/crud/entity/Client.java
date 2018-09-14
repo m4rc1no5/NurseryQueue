@@ -8,7 +8,15 @@ import java.time.LocalDateTime;
  * @author Marcin Zaremba
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = Client.FIND_ALL_ACTIVE_BY_SERVICE,
+                query = "SELECT c FROM Client c WHERE c.active = TRUE AND c.service = :service"
+        )
+})
 public class Client {
+
+    public static final String FIND_ALL_ACTIVE_BY_SERVICE = "Client.findAllActiveByService";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ClientIdGenerator")
