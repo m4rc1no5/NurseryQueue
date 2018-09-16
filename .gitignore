@@ -13,4 +13,5 @@ buildNumber.properties
 
 /NurseryQueueApi/src/test/resources/config/gdansk_nursery_team.yaml
 /docker/NurseryQueueApi/standalone.xml
+/docker/NurseryQueueApi/NurseryQueueApi.war
 /NurseryQueueApi/config/flyway/docker.conf
