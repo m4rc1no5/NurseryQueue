@@ -2,6 +2,8 @@ package pl.marceen.nurseryqueueapi.gdansknurseryteam.boundary;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.marceen.nurseryqueueapi.email.control.EmailSender;
+import pl.marceen.nurseryqueueapi.email.entity.EmailData;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.ProcessFacade;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
@@ -24,12 +26,24 @@ public class ProcessResources {
     @Inject
     private ProcessFacade processFacade;
 
+    @Inject
+    private EmailSender emailSender;
+
     @GET
     @Path("check-status")
     public String checkStatus() {
-        logger.info("Time: {}", System.currentTimeMillis());
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("Time: {}", currentTimeMillis);
 
-        return "kaboooom!";
+        emailSender.send(
+                new EmailData()
+                        .emailsFrom("yo@lo.pl")
+                        .emailsTo("marcin.zaremba@gmail.com")
+                        .subject("JavaEE and WildFly mail")
+                        .text(String.valueOf(currentTimeMillis))
+        );
+
+        return "kaboooom! " + currentTimeMillis;
     }
 
     @GET
