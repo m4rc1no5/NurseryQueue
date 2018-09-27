@@ -8,7 +8,15 @@ import java.time.LocalDateTime;
  * @author Marcin Zaremba
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = Result.FIND_ALL_BY_CLIENT,
+                query = "SELECT r FROM Result r WHERE r.client = :client ORDER BY r.id DESC"
+        )
+})
 public class Result {
+
+    public static final String FIND_ALL_BY_CLIENT = "Result.findAllByClient";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ResultIdGenerator")

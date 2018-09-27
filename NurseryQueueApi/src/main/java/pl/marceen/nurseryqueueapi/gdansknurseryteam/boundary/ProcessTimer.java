@@ -10,10 +10,12 @@ import pl.marceen.nurseryqueueapi.crud.entity.Service;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.ProcessFacade;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ProcessSucceededEvent;
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,9 @@ public class ProcessTimer {
     @Inject
     private ResultManager resultManager;
 
+    @Inject
+    private Event<ProcessSucceededEvent> processSucceededEventEvent;
+
     @Schedule(persistent = false, hour = "*")
     public void process() {
         logger.info("Process START");
@@ -47,7 +52,11 @@ public class ProcessTimer {
     }
 
     private void parseAndSave(Client client) {
-        parse(client.getLogin(), client.getPassword()).ifPresent(orderResponse -> resultManager.save(map(client, orderResponse)));
+        parse(client.getLogin(), client.getPassword())
+                .ifPresent(orderResponse -> {
+                    resultManager.save(map(client, orderResponse));
+                    processSucceededEventEvent.fire(new ProcessSucceededEvent(client));
+                });
     }
 
     private Optional<OrderResponse> parse(String login, String password) {

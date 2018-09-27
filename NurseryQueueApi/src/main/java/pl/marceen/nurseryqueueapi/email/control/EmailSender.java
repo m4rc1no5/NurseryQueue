@@ -36,5 +36,7 @@ public class EmailSender {
         } catch (MessagingException e) {
             throw EmailException.sendingProblem("Problem with sending email - details: " + e.getMessage(), logger);
         }
+
+        logger.info("Email sent");
     }
 }

@@ -45,6 +45,9 @@ public class Client {
     @NotNull
     private String password;
 
+    @NotNull
+    private String emails;
+
     @PrePersist
     public void setUp() {
         createdAt = LocalDateTime.now();
@@ -82,6 +85,14 @@ public class Client {
         this.active = active;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Service getService() {
         return service;
     }
@@ -106,6 +117,14 @@ public class Client {
         this.password = password;
     }
 
+    public String getEmails() {
+        return emails;
+    }
+
+    public void setEmails(String emails) {
+        this.emails = emails;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Client{");
@@ -113,9 +132,11 @@ public class Client {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", active=").append(active);
+        sb.append(", description='").append(description).append('\'');
         sb.append(", service=").append(service);
         sb.append(", login='").append(login).append('\'');
         sb.append(", password='").append("...").append('\'');
+        sb.append(", emails='").append(emails).append('\'');
         sb.append('}');
         return sb.toString();
     }

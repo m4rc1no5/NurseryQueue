@@ -3,14 +3,19 @@
 ## Co robi aplikacja
 
 - Loguje się automatycznie do Portalu Gdańskiego Zespołu Żłobków i odnotowuje w bazie danych miejsce w kolejkach do żłobków, do których zapisane jest dziecko.
-- W przypadku zmiany miejsca w którejś z kolejek wysyła maila z informacją (do zrobienia).
-- Automatycznie, co miesiąc, potwierdza chęć dalszego oczekiwania w kolejkach (do zrobienia).
+- W przypadku zmiany miejsca w którejś z kolejek wysyła maila z informacją (IN PROGRESS).
+- Automatycznie, co miesiąc, potwierdza chęć dalszego oczekiwania w kolejkach (TODO).
 
 ## Instalacja
 
-### Utworzenie bazy danych
+### Pliki konfiguracyjne
 
-Tworzymy bazę danych o nazwie nureseryqueue, usera nq oraz role pokazane poniżej:
+- Tworzymy i modyfikujemy odpowiednio standalone.xml na podstawie standalone.xml.default
+- Tworzymy i modyfikujemy odpowiednio docker.conf na podstawie docker.conf.default
+
+### Bazy danych
+
+Tworzymy bazę danych o nazwie nureseryqueue, usera oraz grupy pokazane poniżej:
 
 ```sql
 CREATE ROLE nq LOGIN
@@ -30,7 +35,7 @@ CREATE DATABASE nurseryqueue
   WITH OWNER = nq;
 ```
 
-Następnie odpalamy migrację FlyWay:
+Odpalamy migrację bazy danych za pomocą FlyWay:
 
 ```
 -Dflyway.configFiles=config/flyway/docker.conf flyway:migrate
@@ -41,7 +46,7 @@ Następnie odpalamy migrację FlyWay:
 Ustawiamy serwer SMTP w standalone.xml:
 
 ```xml
-<mail-session name="default" jndi-name="java:jboss/mail/Default" debug="true">
+<mail-session name="default" jndi-name="java:jboss/mail/Default">
     <smtp-server outbound-socket-binding-ref="mail-smtp" username="user" password="pass" ssl="true" tls="true"/>
 </mail-session>
 ```
@@ -53,7 +58,3 @@ oraz:
     <remote-destination host="smtp.example_host.com" port="465"/>
 </outbound-socket-binding>
 ```
-
-
-
-
