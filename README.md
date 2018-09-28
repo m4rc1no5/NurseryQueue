@@ -35,10 +35,10 @@ CREATE DATABASE nurseryqueue
   WITH OWNER = nq;
 ```
 
-Odpalamy migrację bazy danych za pomocą FlyWay:
+Odpalamy migrację bazy danych za pomocą FlyWay (z poziomu NurseryQueueApi):
 
 ```
--Dflyway.configFiles=config/flyway/docker.conf flyway:migrate
+mvn -Dflyway.configFiles=config/flyway/docker.conf flyway:migrate
 ```
 
 ### Wysyłka maili
@@ -57,4 +57,10 @@ oraz:
 <outbound-socket-binding name="mail-smtp">
     <remote-destination host="smtp.example_host.com" port="465"/>
 </outbound-socket-binding>
+```
+
+### Budowanie projektu 
+
+```
+mvn clean install
 ```
