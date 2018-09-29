@@ -2,18 +2,18 @@ package pl.marceen.nurseryqueueapi.gdansknurseryteam.boundary;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.marceen.nurseryqueueapi.email.control.EmailSender;
-import pl.marceen.nurseryqueueapi.email.entity.EmailData;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.ProcessFacade;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LocalDateRequest;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LocalDateResponse;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.time.LocalDate;
 
 /**
  * @author Marcin Zaremba
@@ -26,24 +26,20 @@ public class ProcessResources {
     @Inject
     private ProcessFacade processFacade;
 
-    @Inject
-    private EmailSender emailSender;
-
-    @GET
+    @POST
     @Path("check-status")
-    public String checkStatus() {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public LocalDateResponse checkStatus(LocalDateRequest request) {
+        logger.info("request: {}", request);
+
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("Time: {}", currentTimeMillis);
 
-        emailSender.send(
-                new EmailData()
-                        .emailsFrom("yo@lo.pl")
-                        .emailsTo("marcin.zaremba@gmail.com")
-                        .subject("JavaEE and WildFly mail")
-                        .text(String.valueOf(currentTimeMillis))
-        );
+        LocalDateResponse response = new LocalDateResponse();
+        response.setResponseTime(LocalDate.now());
 
-        return "kaboooom! " + currentTimeMillis;
+        return response;
     }
 
     @GET
