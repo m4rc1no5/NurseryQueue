@@ -7,5 +7,4 @@ cp -f ../NurseryQueueApi/target/NurseryQueueApi.war NurseryQueueApi/NurseryQueue
 # restart
 docker-compose stop -t 1 nurseryqueueapi
 docker-compose build nurseryqueueapi
-docker-compose create nurseryqueueapi
-docker-compose start nurseryqueueapi
+docker-compose up nurseryqueueapi
