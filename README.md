@@ -3,8 +3,8 @@
 ## Co robi aplikacja
 
 - Loguje się automatycznie do Portalu Gdańskiego Zespołu Żłobków i odnotowuje w bazie danych miejsce w kolejkach do żłobków, do których zapisane jest dziecko.
-- W przypadku zmiany miejsca w którejś z kolejek wysyła maila z informacją (IN PROGRESS).
-- Automatycznie, co miesiąc, potwierdza chęć dalszego oczekiwania w kolejkach (TODO).
+- W przypadku zmiany miejsca w którejś z kolejek wysyła maila z informacją.
+- Automatycznie, co miesiąc, potwierdza chęć dalszego oczekiwania w kolejkach (w trakcie tworzenia).
 
 ## Instalacja
 
