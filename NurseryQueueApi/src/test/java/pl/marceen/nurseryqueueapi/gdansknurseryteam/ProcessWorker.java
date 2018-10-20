@@ -55,22 +55,22 @@ public class ProcessWorker {
     public void process() throws Exception {
         logger.info("Process START");
 
-        String json = FileReader.read(getClass(), "config/gdansk_nursery_team.yaml");
-        GdanskNurseryTeamConfig gdanskNurseryTeamConfig = convertConfig(json);
+        var json = FileReader.read(getClass(), "config/gdansk_nursery_team.yaml");
+        var gdanskNurseryTeamConfig = convertConfig(json);
 
-        OkHttpClient client = new OkHttpClient();
+        var client = new OkHttpClient();
 
         logger.info("Login");
-        LoginResponse loginResponse = loginProcessor.login(client, gdanskNurseryTeamConfig.getLogin(), gdanskNurseryTeamConfig.getPassword());
+        var loginResponse = loginProcessor.login(client, gdanskNurseryTeamConfig.getLogin(), gdanskNurseryTeamConfig.getPassword());
 
-        String token = loginResponse.getToken();
+        var token = loginResponse.getToken();
         logger.info("Token: {}", token);
 
         logger.info("Getting dictionary");
         dictionaryProcessor.process(client, token);
 
         logger.info("Getting order");
-        OrderResponse orderResponse = orderProcessor.process(client, token);
+        var orderResponse = orderProcessor.process(client, token);
         logger.info("nursery #1: {} - {}", orderResponse.getFirstNurseryName(), orderResponse.getFirstNurseryStanding());
         logger.info("nursery #2: {} - {}", orderResponse.getSecondNurseryName(), orderResponse.getSecondNurseryStanding());
         logger.info("nursery #3: {} - {}", orderResponse.getThirdNurseryName(), orderResponse.getThirdNurseryStanding());
