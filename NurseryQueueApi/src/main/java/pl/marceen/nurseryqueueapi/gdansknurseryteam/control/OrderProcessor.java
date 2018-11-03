@@ -1,20 +1,18 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
-import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
-import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.DecodedData;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
+import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
+import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
+import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
 import javax.inject.Inject;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
-import java.util.regex.Matcher;
+import java.net.http.HttpClient;
 import java.util.regex.Pattern;
 
 /**
@@ -34,25 +32,23 @@ public class OrderProcessor {
     @Inject
     private Base64Decoder base64Decoder;
 
-    public OrderResponse process(OkHttpClient client, String token) throws NetworkException, ParserException {
-        DecodedData decodedData = getDecodedData(token);
+    public OrderResponse process(HttpClient client, String token) throws NetworkException, ParserException {
+        var decodedData = getDecodedData(token);
         logger.info(decodedData.toString());
 
-        Request request = requestBuilder.buildRequestForOrder(token, decodedData.getApplicationId());
-
-        return httpExcecutor.execute(OrderResponse.class, client, request);
+        return httpExcecutor.execute(OrderResponse.class, client, requestBuilder.buildRequestForOrder(token, decodedData.getApplicationId()));
     }
 
     private DecodedData getDecodedData(String token) throws ParserException {
         logger.info("Try to get decoded data");
 
-        Matcher matcher = PATTERN.matcher(base64Decoder.decode(token));
+        var matcher = PATTERN.matcher(base64Decoder.decode(token));
 
         if (!matcher.find()) {
             throw ParserException.decodedDataNotFound(logger);
         }
 
-        String decodedDataAsJson = matcher.group(2);
+        var decodedDataAsJson = matcher.group(2);
         logger.info("Decoded data as Json: {}", decodedDataAsJson);
 
         return convertToDecodedData(decodedDataAsJson);

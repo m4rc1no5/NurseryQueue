@@ -1,15 +1,14 @@
 package pl.marceen.nurseryqueueapi.network.control;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
 import javax.json.bind.JsonbBuilder;
-import java.io.IOException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Marcin Zaremba
@@ -17,14 +16,14 @@ import java.io.IOException;
 public class HttpExcecutor<T> {
     private static final Logger logger = LoggerFactory.getLogger(HttpExcecutor.class);
 
-    public T execute(Class<T> clazz, OkHttpClient client, Request request) throws NetworkException {
+    public T execute(Class<T> clazz, HttpClient client, HttpRequest request) throws NetworkException {
         logger.info("START");
 
-        Response response = getResponse(client, request);
-        String responseAsString = getResponseAsString(response.body());
+        var response = getResponse(client, request);
+        logger.info("Raw response: {}", response);
 
         logger.info("Try to convert response to object class {}", clazz.getSimpleName());
-        T result = JsonbBuilder.create().fromJson(responseAsString, clazz);
+        T result = JsonbBuilder.create().fromJson(response, clazz);
         logger.info(result.toString());
 
         logger.info("STOP");
@@ -32,26 +31,12 @@ public class HttpExcecutor<T> {
         return result;
     }
 
-    private Response getResponse(OkHttpClient client, Request request) throws NetworkException {
-        logger.info("Try to get Response...");
-
+    private String getResponse(HttpClient client, HttpRequest request) throws NetworkException {
         try {
-            return client.newCall(request).execute();
-        } catch (IOException e) {
-            throw NetworkException.connectionProblem(e.getMessage(), logger);
-        }
-    }
-
-    private String getResponseAsString(ResponseBody responseBody) throws NetworkException {
-        logger.info("Try to convert response body to String...");
-
-        if (responseBody == null) {
-            throw NetworkException.noAnswer(logger);
-        }
-
-        try {
-            return responseBody.string();
-        } catch (IOException e) {
+            return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
             throw NetworkException.connectionProblem(e.getMessage(), logger);
         }
     }

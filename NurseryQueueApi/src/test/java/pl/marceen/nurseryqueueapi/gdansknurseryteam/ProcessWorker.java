@@ -1,6 +1,5 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam;
 
-import okhttp3.OkHttpClient;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,11 +13,11 @@ import org.slf4j.LoggerFactory;
 import pl.marceen.nurseryqueueapi.FileReader;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.control.*;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
 import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
 import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
 
 import javax.json.bind.JsonbBuilder;
+import java.net.http.HttpClient;
 
 /**
  * @author Marcin Zaremba
@@ -58,19 +57,20 @@ public class ProcessWorker {
         var json = FileReader.read(getClass(), "config/gdansk_nursery_team.yaml");
         var gdanskNurseryTeamConfig = convertConfig(json);
 
-        var client = new OkHttpClient();
+        var httpClient = HttpClient.newBuilder()
+                .build();
 
         logger.info("Login");
-        var loginResponse = loginProcessor.login(client, gdanskNurseryTeamConfig.getLogin(), gdanskNurseryTeamConfig.getPassword());
+        var loginResponse = loginProcessor.login(httpClient, gdanskNurseryTeamConfig.getLogin(), gdanskNurseryTeamConfig.getPassword());
 
         var token = loginResponse.getToken();
         logger.info("Token: {}", token);
 
         logger.info("Getting dictionary");
-        dictionaryProcessor.process(client, token);
+        dictionaryProcessor.process(httpClient, token);
 
         logger.info("Getting order");
-        var orderResponse = orderProcessor.process(client, token);
+        var orderResponse = orderProcessor.process(httpClient, token);
         logger.info("nursery #1: {} - {}", orderResponse.getFirstNurseryName(), orderResponse.getFirstNurseryStanding());
         logger.info("nursery #2: {} - {}", orderResponse.getSecondNurseryName(), orderResponse.getSecondNurseryStanding());
         logger.info("nursery #3: {} - {}", orderResponse.getThirdNurseryName(), orderResponse.getThirdNurseryStanding());

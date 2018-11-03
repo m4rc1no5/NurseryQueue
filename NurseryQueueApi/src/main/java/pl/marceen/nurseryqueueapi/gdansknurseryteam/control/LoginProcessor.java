@@ -1,17 +1,15 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
 import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
 import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginRequest;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
 
 import javax.inject.Inject;
 import javax.json.bind.JsonbBuilder;
+import java.net.http.HttpClient;
 
 /**
  * @author Marcin Zaremba
@@ -28,13 +26,10 @@ public class LoginProcessor {
     @Inject
     private HttpExcecutor<LoginResponse> httpExcecutor;
 
-    public LoginResponse login(OkHttpClient client, String login, String password) throws NetworkException {
-        LoginRequest loginRequest = loginRequestBuilder.build(login, password);
-
-        String json = JsonbBuilder.create().toJson(loginRequest);
+    public LoginResponse login(HttpClient client, String login, String password) throws NetworkException {
+        var json = JsonbBuilder.create().toJson(loginRequestBuilder.build(login, password));
         logger.info("LoginRequest: {}", json);
 
-        Request request = requestBuilder.buildRequestForLogin(json);
-        return httpExcecutor.execute(LoginResponse.class, client, request);
+        return httpExcecutor.execute(LoginResponse.class, client, requestBuilder.buildRequestForLogin(json));
     }
 }
