@@ -9,6 +9,9 @@ public class OrderResponse {
     @JsonbProperty("zgloszenie_id")
     private String applicationId;
 
+    @JsonbProperty("nastepne_potwierdzenie_od")
+    private String nextConfirmationFrom;
+
     @JsonbProperty("zlobek_1_nazwa")
     private String firstNurseryName;
     @JsonbProperty("zlobek_1_pozycja")
@@ -30,6 +33,14 @@ public class OrderResponse {
 
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
+    }
+
+    public String getNextConfirmationFrom() {
+        return nextConfirmationFrom;
+    }
+
+    public void setNextConfirmationFrom(String nextConfirmationFrom) {
+        this.nextConfirmationFrom = nextConfirmationFrom;
     }
 
     public String getFirstNurseryName() {
@@ -84,6 +95,7 @@ public class OrderResponse {
     public String toString() {
         final StringBuilder sb = new StringBuilder("OrderResponse{");
         sb.append("applicationId='").append(applicationId).append('\'');
+        sb.append(", nextConfirmationFrom='").append(nextConfirmationFrom).append('\'');
         sb.append(", firstNurseryName='").append(firstNurseryName).append('\'');
         sb.append(", firstNurseryStanding='").append(firstNurseryStanding).append('\'');
         sb.append(", secondNurseryName='").append(secondNurseryName).append('\'');

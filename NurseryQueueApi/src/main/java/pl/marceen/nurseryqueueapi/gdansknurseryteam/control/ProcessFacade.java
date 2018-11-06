@@ -2,7 +2,7 @@ package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ConfirmationData;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
@@ -25,20 +25,32 @@ public class ProcessFacade {
     @Inject
     private OrderProcessor orderProcessor;
 
+    @Inject
+    private ConfirmationProcessor confirmationProcessor;
+
     public OrderResponse process(String login, String password) throws NetworkException, ParserException {
         var httpClient = HttpClient.newBuilder()
                 .build();
 
         logger.info("Login");
-        LoginResponse loginResponse = loginProcessor.login(httpClient, login, password);
+        var loginResponse = loginProcessor.login(httpClient, login, password);
 
-        String token = loginResponse.getToken();
+        var token = loginResponse.getToken();
         logger.info("Token: {}", token);
 
         logger.info("Getting dictionary");
         dictionaryProcessor.process(httpClient, token);
 
         logger.info("Getting order");
-        return orderProcessor.process(httpClient, token);
+        var orderResponse = orderProcessor.process(httpClient, token);
+
+        logger.info("Confirming order");
+        confirmationProcessor.confirm(new ConfirmationData()
+                .httpClient(httpClient)
+                .token(token)
+                .nextConfirmationFrom(orderResponse.getNextConfirmationFrom())
+        );
+
+        return orderResponse;
     }
 }
