@@ -21,44 +21,18 @@ import java.util.regex.Pattern;
 public class OrderProcessor {
     private static final Logger logger = LoggerFactory.getLogger(OrderProcessor.class);
 
-    private static final Pattern PATTERN = Pattern.compile("^(\\{\"alg\":\"HS256\",\"typ\":\"JWS\"})(\\{.*})");
-
     @Inject
     private RequestBuilder requestBuilder;
 
     @Inject
-    private HttpExcecutor<OrderResponse> httpExcecutor;
+    private TokenDecoder tokenDecoder;
 
     @Inject
-    private Base64Decoder base64Decoder;
+    private HttpExcecutor<OrderResponse> httpExcecutor;
 
     public OrderResponse process(HttpClient client, String token) throws NetworkException, ParserException {
-        var decodedData = getDecodedData(token);
-        logger.info(decodedData.toString());
+        logger.info("Ordering");
 
-        return httpExcecutor.execute(OrderResponse.class, client, requestBuilder.buildRequestForOrder(token, decodedData.getApplicationId()));
-    }
-
-    private DecodedData getDecodedData(String token) throws ParserException {
-        logger.info("Try to get decoded data");
-
-        var matcher = PATTERN.matcher(base64Decoder.decode(token));
-
-        if (!matcher.find()) {
-            throw ParserException.decodedDataNotFound(logger);
-        }
-
-        var decodedDataAsJson = matcher.group(2);
-        logger.info("Decoded data as Json: {}", decodedDataAsJson);
-
-        return convertToDecodedData(decodedDataAsJson);
-    }
-
-    private DecodedData convertToDecodedData(String json) throws ParserException {
-        try {
-            return JsonbBuilder.create().fromJson(json, DecodedData.class);
-        } catch (JsonbException e) {
-            throw ParserException.decodedDataNotFound(logger);
-        }
+        return httpExcecutor.execute(OrderResponse.class, client, requestBuilder.buildRequestForOrder(token, tokenDecoder.decode(token).getApplicationId()));
     }
 }

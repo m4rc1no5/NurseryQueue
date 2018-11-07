@@ -8,10 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ConfirmationData;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
+import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
 import java.net.http.HttpClient;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Marcin Zaremba
@@ -38,7 +38,7 @@ public class ConfirmationProcessorTest {
     }
 
     @Test
-    public void confirm() {
+    public void confirm() throws NetworkException, ParserException {
         //given
 
         //when

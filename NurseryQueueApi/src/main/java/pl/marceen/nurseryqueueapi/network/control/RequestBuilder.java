@@ -39,6 +39,15 @@ public class RequestBuilder {
                 .build();
     }
 
+    public HttpRequest buildRequestForConfirmation(String token, String applicationId) {
+        return HttpRequest.newBuilder()
+                .uri(URI.create(Page.ORDER.getUrl() + applicationId + "/potwierdz"))
+                .timeout(Duration.ofMinutes(1))
+                .header(HEADER_NAME_AUTHORIZATION, getHeaderValueAuthorization(token))
+                .method("PATCH", HttpRequest.BodyPublishers.ofString("{}"))
+                .build();
+    }
+
     private String getHeaderValueAuthorization(String token) {
         return "Bearer " + token;
     }

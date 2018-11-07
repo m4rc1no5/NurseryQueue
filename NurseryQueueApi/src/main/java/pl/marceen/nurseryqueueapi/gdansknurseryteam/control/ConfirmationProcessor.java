@@ -3,7 +3,13 @@ package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ConfirmationData;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.OrderResponse;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
+import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
+import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
+import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 
 /**
@@ -12,12 +18,18 @@ import java.time.LocalDate;
 public class ConfirmationProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ConfirmationProcessor.class);
 
-    void confirm(ConfirmationData data) {
+    @Inject
+    private RequestBuilder requestBuilder;
+
+    @Inject
+    private TokenDecoder tokenDecoder;
+
+    @Inject
+    private HttpExcecutor<OrderResponse> httpExcecutor;
+
+    void confirm(ConfirmationData data) throws ParserException, NetworkException {
         logger.info("Confirmation START");
-        logger.info(data.toString());
 
-
-        // TODO: 2018-11-06 sprawdzenie czy możliwe jest sparsowanie daty
         LocalDate nextConfirmation = LocalDate.parse(data.getNextConfirmationFrom());
         if (nextConfirmation.isAfter(LocalDate.now())) {
             logger.info("Confirmation unnecessary");
@@ -25,10 +37,11 @@ public class ConfirmationProcessor {
         }
 
         logger.info("Confirming");
-
-        // TODO: 2018-11-06 potwiedzamy zamówienie jeśli jest już odpowiedni moment
-
-        // TODO: 2018-11-06 wysyłamy maila z informacją o tym, że potwiedzenie wykonało się poprawnie
+        httpExcecutor.execute(
+                OrderResponse.class,
+                data.getHttpClient(),
+                requestBuilder.buildRequestForConfirmation(data.getToken(), tokenDecoder.decode(data.getToken()).getApplicationId())
+        );
 
         logger.info("Confirmation STOP");
     }
