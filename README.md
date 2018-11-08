@@ -1,10 +1,18 @@
 # NurseryQueue
 
+[![Build Status](https://travis-ci.org/m4rc1no5/NurseryQueue.svg?branch=master)](https://travis-ci.org/m4rc1no5/NurseryQueue)
+
 ## Co robi aplikacja
 
-- Loguje się automatycznie do Portalu Gdańskiego Zespołu Żłobków i odnotowuje w bazie danych miejsce w kolejkach do żłobków, do których zapisane jest dziecko.
-- W przypadku zmiany miejsca w którejś z kolejek wysyła maila z informacją.
-- Automatycznie, co miesiąc, potwierdza chęć dalszego oczekiwania w kolejkach (w trakcie tworzenia).
+- Loguje się do Portalu Gdańskiego Zespołu Żłobków i odnotowuje w bazie danych miejsce w kolejkach do żłobków, do których zapisane jest dziecko.
+- W przypadku zmiany miejsca w którejś z kolejek wysyła maila z odpowiednią informacją.
+- Automatycznie w odpowiednim momencie potwierdza chęć dalszego oczekiwania w kolejkach.
+
+## Zastosowane technologie
+
+- Java 11
+- Java EE8
+- WildFly 14.0.1.Final
 
 ## Instalacja
 
