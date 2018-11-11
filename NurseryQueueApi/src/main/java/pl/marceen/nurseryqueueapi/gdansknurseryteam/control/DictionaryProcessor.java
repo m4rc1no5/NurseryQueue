@@ -22,7 +22,7 @@ public class DictionaryProcessor {
     @Inject
     private HttpExcecutor<DictionaryResponse> httpExcecutor;
 
-    public DictionaryResponse process(HttpClient client, String token) throws NetworkException {
+    public DictionaryResponse process(HttpClient client, String token) throws NetworkException, InterruptedException {
         logger.info("Try to get dictionary");
 
         return httpExcecutor.execute(DictionaryResponse.class, client, requestBuilder.buildRequestForDictionary(token));

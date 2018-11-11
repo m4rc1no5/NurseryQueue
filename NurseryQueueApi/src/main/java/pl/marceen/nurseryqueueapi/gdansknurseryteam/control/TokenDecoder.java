@@ -40,10 +40,12 @@ public class TokenDecoder {
     }
 
     private DecodedData convertToDecodedData(String json) throws ParserException {
-        try {
-            return JsonbBuilder.create().fromJson(json, DecodedData.class);
+        try (var jsonb = JsonbBuilder.create()) {
+            return jsonb.fromJson(json, DecodedData.class);
         } catch (JsonbException e) {
             throw ParserException.decodedDataNotFound(logger);
+        } catch (Exception e) {
+            throw ParserException.problemWithBuildingJsonb(e.getMessage(), logger);
         }
     }
 }

@@ -27,6 +27,8 @@ import java.util.Optional;
 public class ProcessTimer {
     private static final Logger logger = LoggerFactory.getLogger(ProcessTimer.class);
 
+    private static final String PROCESS_FAILED = "Process failed - message: {}";
+
     @Inject
     private ClientManager clientManager;
 
@@ -65,7 +67,13 @@ public class ProcessTimer {
         try {
             return Optional.of(processFacade.process(login, password));
         } catch (NetworkException | ParserException e) {
-            logger.error("Process failed - message: {}", e.getMessage());
+            logger.error(PROCESS_FAILED, e.getMessage());
+
+            return Optional.empty();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logger.error(PROCESS_FAILED, e.getMessage());
+
             return Optional.empty();
         }
     }

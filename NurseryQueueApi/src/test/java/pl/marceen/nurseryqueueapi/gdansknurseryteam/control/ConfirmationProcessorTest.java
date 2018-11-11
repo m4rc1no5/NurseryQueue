@@ -38,7 +38,7 @@ public class ConfirmationProcessorTest {
     }
 
     @Test
-    public void confirm() throws NetworkException, ParserException {
+    public void confirm() throws NetworkException, ParserException, InterruptedException {
         //given
 
         //when

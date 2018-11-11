@@ -28,7 +28,7 @@ public class ProcessFacade {
     @Inject
     private ConfirmationProcessor confirmationProcessor;
 
-    public OrderResponse process(String login, String password) throws NetworkException, ParserException {
+    public OrderResponse process(String login, String password) throws NetworkException, ParserException, InterruptedException {
         var httpClient = HttpClient.newBuilder()
                 .build();
 

@@ -44,7 +44,8 @@ public class ProcessResources {
 
     @GET
     @Path("check-order/{login}/{password}")
-    public String checkOrder(@PathParam("login") String login, @PathParam("password") String password) throws NetworkException, ParserException {
+    public String checkOrder(@PathParam("login") String login, @PathParam("password") String password) throws NetworkException, ParserException,
+            InterruptedException {
         OrderResponse orderResponse = processFacade.process(login, password);
 
         return orderResponse.getFirstNurseryName() + " - " + orderResponse.getFirstNurseryStanding();

@@ -30,7 +30,7 @@ public class OrderProcessor {
     @Inject
     private HttpExcecutor<OrderResponse> httpExcecutor;
 
-    public OrderResponse process(HttpClient client, String token) throws NetworkException, ParserException {
+    public OrderResponse process(HttpClient client, String token) throws NetworkException, ParserException, InterruptedException {
         logger.info("Ordering");
 
         return httpExcecutor.execute(OrderResponse.class, client, requestBuilder.buildRequestForOrder(token, tokenDecoder.decode(token).getApplicationId()));
