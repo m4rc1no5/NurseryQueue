@@ -46,8 +46,6 @@ public class HttpExcecutor<T> {
                     .get();
         } catch (ExecutionException e) {
             throw NetworkException.connectionProblem(e.getMessage(), logger);
-        } catch (InterruptedException e) {
-            throw e;
         }
     }
 }
