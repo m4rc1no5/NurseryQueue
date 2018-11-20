@@ -22,8 +22,8 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <jacoco.version>0.8.2</jacoco.version>
-        <jacoco.agent.jar>${settings.localRepository}\org\jacoco\org.jacoco.agent\${jacoco.version}\org.jacoco.agent-${jacoco.version}-runtime.jar</jacoco.agent.jar>
-        <surefire.argLine>-javaagent:${jacoco.agent.jar}=destfile=${project.build.directory}\jacoco-ut.exec</surefire.argLine>
+        <jacoco.agent.jar>${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar</jacoco.agent.jar>
+        <surefire.argLine>-javaagent:${jacoco.agent.jar}=destfile=${project.build.directory}/jacoco-ut.exec</surefire.argLine>
     </properties>
 
     <dependencyManagement>
