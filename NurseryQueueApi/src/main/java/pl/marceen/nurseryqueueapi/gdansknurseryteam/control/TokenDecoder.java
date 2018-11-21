@@ -33,10 +33,7 @@ public class TokenDecoder {
         var decodedDataAsJson = matcher.group(2);
         logger.info("Decoded data as Json: {}", decodedDataAsJson);
 
-        var decodedData = convertToDecodedData(decodedDataAsJson);
-        logger.info(decodedData.toString());
-
-        return decodedData;
+        return convertToDecodedData(decodedDataAsJson);
     }
 
     private DecodedData convertToDecodedData(String json) throws ParserException {

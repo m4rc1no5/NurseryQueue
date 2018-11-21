@@ -10,7 +10,7 @@ public class NetworkException extends Exception {
     private static final String MSG_CONNECTION_PROBLEM = "Connection problem";
 
     public static NetworkException connectionProblem(String details, Logger logger) {
-        logger.error(String.format("%s - %s", MSG_CONNECTION_PROBLEM, details));
+        logger.error("{} - details: {}", MSG_CONNECTION_PROBLEM, details);
 
         return new NetworkException(MSG_CONNECTION_PROBLEM);
     }

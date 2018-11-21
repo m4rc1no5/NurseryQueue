@@ -21,7 +21,7 @@ public class ResultManager {
     private EntityManager entityManager;
 
     public List<Result> findAllByClient(Client client, int limit) {
-        logger.info("Try to find {} results by client: ", limit, client.getLogin());
+        logger.info("Try to find {} results by client: {}", limit, client.getLogin());
 
         return entityManager.createNamedQuery(Result.FIND_ALL_BY_CLIENT, Result.class)
                 .setParameter("client", client)

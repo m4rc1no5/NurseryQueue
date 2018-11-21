@@ -17,7 +17,7 @@ public class ParserException extends Exception {
     }
 
     public static ParserException problemWithBuildingJsonb(String details, Logger logger) throws ParserException {
-        logger.error(String.format("%s - %s", PROBLEM_WITH_BUILDING_JSONB, details));
+        logger.error("{} - details: {}", PROBLEM_WITH_BUILDING_JSONB, details);
 
         throw new ParserException(PROBLEM_WITH_BUILDING_JSONB);
     }

@@ -24,7 +24,6 @@ public class HttpExcecutor<T> {
 
         logger.info("Try to convert response to object class {}", clazz.getSimpleName());
         T result = getResult(response, clazz);
-        logger.info(result.toString());
 
         logger.info("STOP");
 
