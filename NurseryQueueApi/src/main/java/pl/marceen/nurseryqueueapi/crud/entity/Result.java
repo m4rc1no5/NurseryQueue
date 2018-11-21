@@ -2,19 +2,16 @@ package pl.marceen.nurseryqueueapi.crud.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 /**
  * @author Marcin Zaremba
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = Result.FIND_ALL_BY_CLIENT,
-                query = "SELECT r FROM Result r WHERE r.client = :client ORDER BY r.id DESC"
-        )
-})
-public class Result {
+@NamedQuery(
+        name = Result.FIND_ALL_BY_CLIENT,
+        query = "SELECT r FROM Result r WHERE r.client = :client ORDER BY r.id DESC"
+)
+public class Result extends SimpleEntity {
 
     public static final String FIND_ALL_BY_CLIENT = "Result.findAllByClient";
 
@@ -22,15 +19,6 @@ public class Result {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ResultIdGenerator")
     @SequenceGenerator(name = "ResultIdGenerator", sequenceName = "result_id_seq", allocationSize = 1)
     private Long id;
-
-    @NotNull
-    private LocalDateTime createdAt;
-
-    @NotNull
-    @Version
-    private LocalDateTime updatedAt;
-
-    private String description;
 
     @NotNull
     @ManyToOne
@@ -46,33 +34,12 @@ public class Result {
     private String thirdNurseryName;
     private Integer thirdNurseryStanding;
 
-    @PrePersist
-    public void setUp() {
-        createdAt = LocalDateTime.now();
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public Client getClient() {
@@ -135,8 +102,6 @@ public class Result {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Result{");
         sb.append("id=").append(id);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", client=").append(client);
         sb.append(", firstNurseryName='").append(firstNurseryName).append('\'');
         sb.append(", firstNurseryStanding=").append(firstNurseryStanding);
@@ -145,6 +110,7 @@ public class Result {
         sb.append(", thirdNurseryName='").append(thirdNurseryName).append('\'');
         sb.append(", thirdNurseryStanding=").append(thirdNurseryStanding);
         sb.append('}');
+        sb.append(super.toString());
         return sb.toString();
     }
 }

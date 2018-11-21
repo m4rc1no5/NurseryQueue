@@ -2,19 +2,16 @@ package pl.marceen.nurseryqueueapi.crud.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 /**
  * @author Marcin Zaremba
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = Client.FIND_ALL_ACTIVE_BY_SERVICE,
-                query = "SELECT c FROM Client c WHERE c.active = TRUE AND c.service = :service"
-        )
-})
-public class Client {
+@NamedQuery(
+        name = Client.FIND_ALL_ACTIVE_BY_SERVICE,
+        query = "SELECT c FROM Client c WHERE c.active = TRUE AND c.service = :service"
+)
+public class Client extends SimpleEntity {
 
     public static final String FIND_ALL_ACTIVE_BY_SERVICE = "Client.findAllActiveByService";
 
@@ -24,16 +21,7 @@ public class Client {
     private Long id;
 
     @NotNull
-    private LocalDateTime createdAt;
-
-    @NotNull
-    @Version
-    private LocalDateTime updatedAt;
-
-    @NotNull
     private Boolean active;
-
-    private String description;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -48,11 +36,6 @@ public class Client {
     @NotNull
     private String emails;
 
-    @PrePersist
-    public void setUp() {
-        createdAt = LocalDateTime.now();
-    }
-
     public Long getId() {
         return id;
     }
@@ -61,36 +44,12 @@ public class Client {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public Boolean getActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Service getService() {
@@ -129,15 +88,13 @@ public class Client {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Client{");
         sb.append("id=").append(id);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", active=").append(active);
-        sb.append(", description='").append(description).append('\'');
         sb.append(", service=").append(service);
         sb.append(", login='").append(login).append('\'');
-        sb.append(", password='").append("...").append('\'');
+        sb.append(", password='").append(password).append('\'');
         sb.append(", emails='").append(emails).append('\'');
         sb.append('}');
+        sb.append(super.toString());
         return sb.toString();
     }
 }
