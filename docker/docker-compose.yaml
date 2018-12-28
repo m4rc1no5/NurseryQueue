@@ -9,7 +9,7 @@ services:
       - "8080:8080"
       - "8787:8787"
       - "9990:9990"
-    command: /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 --debug
+    command: /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 --debug *:8787
 
 networks:
   default:
