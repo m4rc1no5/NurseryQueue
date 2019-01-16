@@ -13,7 +13,7 @@
 
 - Java 11
 - Java EE8
-- WildFly 14.0.1.Final
+- WildFly 15.0.0.Final
 
 ## Instalacja
 
