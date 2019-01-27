@@ -25,9 +25,9 @@ public class PageTest {
 
     public static Object[][] provider() {
         return new Object[][] {
-                { Page.LOGIN, "https://rejestracja.zlobki.gda.pl/api/api/v1.0/konto/login" },
-                { Page.DICTIONARY, "https://rejestracja.zlobki.gda.pl/api/api/v1.0/slowniki?slowniki=%5B%22zlobek%22%5D" },
-                { Page.ORDER, "https://rejestracja.zlobki.gda.pl/api/api/v1.0/zgloszenia/" }
+                { Page.LOGIN, "https://kolejka.gzz.hekko24.pl/api/v1.0/konto/login" },
+                { Page.DICTIONARY, "https://kolejka.gzz.hekko24.pl/api/v1.0/slowniki?slowniki=%5B%22zlobek%22%5D" },
+                { Page.ORDER, "https://kolejka.gzz.hekko24.pl/api/v1.0/zgloszenia/" }
         };
     }
 }
