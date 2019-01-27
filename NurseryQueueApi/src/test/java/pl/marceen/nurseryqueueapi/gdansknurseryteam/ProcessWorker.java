@@ -1,5 +1,6 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +42,9 @@ public class ProcessWorker {
     private Base64Decoder base64Decoder;
 
     @InjectMocks
+    private TokenDecoder tokenDecoder;
+
+    @InjectMocks
     private LoginProcessor loginProcessor;
 
     @InjectMocks
@@ -48,6 +52,11 @@ public class ProcessWorker {
 
     @InjectMocks
     private OrderProcessor orderProcessor;
+
+    @Before
+    public void setUp() {
+        orderProcessor.setTokenDecoder(tokenDecoder);
+    }
 
     @Test
     @Ignore

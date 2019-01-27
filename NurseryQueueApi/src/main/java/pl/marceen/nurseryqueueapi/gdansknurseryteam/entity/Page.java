@@ -8,7 +8,7 @@ public enum Page {
     DICTIONARY("slowniki?slowniki=%5B%22zlobek%22%5D"),
     ORDER("zgloszenia/");
 
-    private static final String HOST = "https://rejestracja.zlobki.gda.pl/api/api/v1.0/";
+    private static final String HOST = "https://kolejka.gzz.hekko24.pl/api/v1.0/";
 
     private String endpoint;
 

@@ -35,4 +35,8 @@ public class OrderProcessor {
 
         return httpExcecutor.execute(OrderResponse.class, client, requestBuilder.buildRequestForOrder(token, tokenDecoder.decode(token).getApplicationId()));
     }
+
+    public void setTokenDecoder(TokenDecoder tokenDecoder) {
+        this.tokenDecoder = tokenDecoder;
+    }
 }
