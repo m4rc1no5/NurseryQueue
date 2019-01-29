@@ -1,4 +1,4 @@
-FROM m4rc1no5/wildfly:15.0.0.Final
+FROM m4rc1no5/wildfly:15.0.1.Final
 MAINTAINER marcin.zaremba@gmail.com
 
 ADD --chown=jboss:0 modules/ $JBOSS_HOME/modules/system

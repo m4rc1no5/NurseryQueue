@@ -14,7 +14,7 @@ import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ProcessSucceededEvent
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
 import javax.ejb.Schedule;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Optional;
 /**
  * @author Marcin Zaremba
  */
-@Stateless
+@Singleton
 public class ProcessTimer {
     private static final Logger logger = LoggerFactory.getLogger(ProcessTimer.class);
 
