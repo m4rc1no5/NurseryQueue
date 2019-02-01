@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
 import javax.json.bind.JsonbBuilder;
+import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -40,10 +41,9 @@ public class HttpExcecutor<T> {
 
     private String getResponse(HttpClient client, HttpRequest request) throws NetworkException, InterruptedException {
         try {
-            return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                    .thenApply(HttpResponse::body)
-                    .get();
-        } catch (ExecutionException e) {
+            return client.send(request, HttpResponse.BodyHandlers.ofString())
+                    .body();
+        } catch (IOException e) {
             throw NetworkException.connectionProblem(e.getMessage(), logger);
         }
     }
