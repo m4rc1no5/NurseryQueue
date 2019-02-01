@@ -1,5 +1,7 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -8,6 +10,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginRequest;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
+import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.Page;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ParserException;
 import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
 import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
@@ -41,25 +44,23 @@ public class LoginProcessorTest {
     private HttpExcecutor<LoginResponse> httpExcecutor;
 
     @Mock
-    private HttpClient httpClient;
-
-    @Mock
-    private HttpRequest httpRequest;
+    private OkHttpClient httpClient;
 
     @InjectMocks
     private LoginProcessor sut;
 
     @Test
-    public void login() throws InterruptedException, ParserException, NetworkException {
+    public void login() throws Exception {
         //given
         LoginRequest loginRequest = new LoginRequest();
+        Request request = new Request.Builder().url(Page.DICTIONARY.getUrl()).build();
         when(loginRequestBuilder.build(LOGIN, PASSWORD)).thenReturn(loginRequest);
-        when(requestBuilder.buildRequestForLogin(JSON)).thenReturn(httpRequest);
+        when(requestBuilder.buildRequestForLogin(JSON)).thenReturn(request);
 
         //when
         sut.login(httpClient, LOGIN, PASSWORD);
 
         //then
-        verify(httpExcecutor).execute(LoginResponse.class, httpClient, httpRequest);
+        verify(httpExcecutor).execute(LoginResponse.class, httpClient, request);
     }
 }
