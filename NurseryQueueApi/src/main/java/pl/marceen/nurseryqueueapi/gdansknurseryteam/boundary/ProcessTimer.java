@@ -41,7 +41,7 @@ public class ProcessTimer {
     @Inject
     private Event<ProcessSucceededEvent> processSucceededEventEvent;
 
-    @Schedule(persistent = false, hour = "*")
+    @Schedule(persistent = false, hour = "*", minute = "*/5")
     public void process() {
         logger.info("Process START");
 
