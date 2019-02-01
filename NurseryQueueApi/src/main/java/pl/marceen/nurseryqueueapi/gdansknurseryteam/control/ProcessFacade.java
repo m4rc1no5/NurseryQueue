@@ -28,10 +28,10 @@ public class ProcessFacade {
     @Inject
     private ConfirmationProcessor confirmationProcessor;
 
-    public OrderResponse process(String login, String password) throws NetworkException, ParserException, InterruptedException {
-        var httpClient = HttpClient.newBuilder()
-                .build();
+    @Inject
+    private HttpClient httpClient;
 
+    public OrderResponse process(String login, String password) throws NetworkException, ParserException, InterruptedException {
         logger.info("Login");
         var loginResponse = loginProcessor.login(httpClient, login, password);
 
