@@ -10,7 +10,7 @@ import java.net.http.HttpClient;
  */
 public class HttpClientProducer {
 
-    @Resource(name = "java:jboss/ee/concurrency/executor/default")
+    @Resource(lookup = "java:jboss/ee/concurrency/executor/default")
     private ManagedExecutorService managedExecutorService;
 
     @Produces
