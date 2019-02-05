@@ -27,7 +27,7 @@ public class ConfirmationProcessor {
     @Inject
     private HttpExcecutor<OrderResponse> httpExcecutor;
 
-    void confirm(ConfirmationData data) throws ParserException, NetworkException, InterruptedException {
+    void confirm(ConfirmationData data) throws ParserException, NetworkException {
         logger.info("Confirmation START");
 
         LocalDate nextConfirmation = LocalDate.parse(data.getNextConfirmationFrom());

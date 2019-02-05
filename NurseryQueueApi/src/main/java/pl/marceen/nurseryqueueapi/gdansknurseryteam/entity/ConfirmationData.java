@@ -1,21 +1,21 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam.entity;
 
-import java.net.http.HttpClient;
+import okhttp3.OkHttpClient;
 
 /**
  * @author Marcin Zaremba
  * // TODO: 2018-11-06 do usunięcia jeśli zostaną tylko trzy atrybuty
  */
 public class ConfirmationData {
-    private HttpClient httpClient;
+    private OkHttpClient httpClient;
     private String token;
     private String nextConfirmationFrom;
 
-    public HttpClient getHttpClient() {
+    public OkHttpClient getHttpClient() {
         return httpClient;
     }
 
-    public ConfirmationData httpClient(HttpClient httpClient) {
+    public ConfirmationData httpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
