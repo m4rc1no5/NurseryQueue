@@ -1,5 +1,6 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.DecodedData;
@@ -30,7 +31,7 @@ public class OrderProcessor {
     @Inject
     private HttpExcecutor<OrderResponse> httpExcecutor;
 
-    public OrderResponse process(HttpClient client, String token) throws NetworkException, ParserException, InterruptedException {
+    public OrderResponse process(OkHttpClient client, String token) throws NetworkException, ParserException {
         logger.info("Ordering");
 
         return httpExcecutor.execute(OrderResponse.class, client, requestBuilder.buildRequestForOrder(token, tokenDecoder.decode(token).getApplicationId()));

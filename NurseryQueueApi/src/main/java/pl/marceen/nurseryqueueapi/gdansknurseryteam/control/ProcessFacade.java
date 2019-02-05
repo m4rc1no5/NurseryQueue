@@ -1,5 +1,6 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.ConfirmationData;
@@ -29,7 +30,7 @@ public class ProcessFacade {
     private ConfirmationProcessor confirmationProcessor;
 
     @Inject
-    private HttpClient httpClient;
+    private OkHttpClient httpClient;
 
     public OrderResponse process(String login, String password) throws NetworkException, ParserException, InterruptedException {
         logger.info("Login");

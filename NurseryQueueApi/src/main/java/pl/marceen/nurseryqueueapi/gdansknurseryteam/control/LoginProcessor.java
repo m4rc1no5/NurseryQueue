@@ -1,5 +1,6 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.LoginResponse;
@@ -27,7 +28,7 @@ public class LoginProcessor {
     @Inject
     private HttpExcecutor<LoginResponse> httpExcecutor;
 
-    public LoginResponse login(HttpClient client, String login, String password) throws ParserException, NetworkException, InterruptedException {
+    public LoginResponse login(OkHttpClient client, String login, String password) throws ParserException, NetworkException {
         var json = getRequestInJson(login, password);
         logger.info("LoginRequest: {}", json);
 

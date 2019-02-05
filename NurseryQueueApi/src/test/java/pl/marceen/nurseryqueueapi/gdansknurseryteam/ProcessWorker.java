@@ -1,5 +1,6 @@
 package pl.marceen.nurseryqueueapi.gdansknurseryteam;
 
+import okhttp3.OkHttpClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -66,8 +67,7 @@ public class ProcessWorker {
         var json = FileReader.read(getClass(), "config/gdansk_nursery_team.yaml");
         var gdanskNurseryTeamConfig = convertConfig(json);
 
-        var httpClient = HttpClient.newBuilder()
-                .build();
+        var httpClient = new OkHttpClient();
 
         logger.info("Login");
         var loginResponse = loginProcessor.login(httpClient, gdanskNurseryTeamConfig.getLogin(), gdanskNurseryTeamConfig.getPassword());
