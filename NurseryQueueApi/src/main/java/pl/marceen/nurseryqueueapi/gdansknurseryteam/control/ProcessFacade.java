@@ -32,7 +32,7 @@ public class ProcessFacade {
     @Inject
     private OkHttpClient httpClient;
 
-    public OrderResponse process(String login, String password) throws NetworkException, ParserException, InterruptedException {
+    public OrderResponse process(String login, String password) throws NetworkException, ParserException {
         logger.info("Login");
         var loginResponse = loginProcessor.login(httpClient, login, password);
 
@@ -50,6 +50,7 @@ public class ProcessFacade {
                 .httpClient(httpClient)
                 .token(token)
                 .nextConfirmationFrom(orderResponse.getNextConfirmationFrom())
+                .login(login)
         );
 
         return orderResponse;

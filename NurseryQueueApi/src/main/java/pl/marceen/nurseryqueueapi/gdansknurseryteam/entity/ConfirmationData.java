@@ -4,12 +4,12 @@ import okhttp3.OkHttpClient;
 
 /**
  * @author Marcin Zaremba
- * // TODO: 2018-11-06 do usunięcia jeśli zostaną tylko trzy atrybuty
  */
 public class ConfirmationData {
     private OkHttpClient httpClient;
     private String token;
     private String nextConfirmationFrom;
+    private String login;
 
     public OkHttpClient getHttpClient() {
         return httpClient;
@@ -38,12 +38,22 @@ public class ConfirmationData {
         return this;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public ConfirmationData login(String login) {
+        this.login = login;
+        return this;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ConfirmationData{");
         sb.append("httpClient=").append(httpClient);
         sb.append(", token='").append(token).append('\'');
         sb.append(", nextConfirmationFrom='").append(nextConfirmationFrom).append('\'');
+        sb.append(", login='").append(login).append('\'');
         sb.append('}');
         return sb.toString();
     }

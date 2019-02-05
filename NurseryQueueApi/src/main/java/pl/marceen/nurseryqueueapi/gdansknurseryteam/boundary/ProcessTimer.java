@@ -70,11 +70,6 @@ public class ProcessTimer {
             logger.error(PROCESS_FAILED, e.getMessage());
 
             return Optional.empty();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            logger.error(PROCESS_FAILED, e.getMessage());
-
-            return Optional.empty();
         }
     }
 

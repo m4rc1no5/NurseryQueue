@@ -3,12 +3,10 @@ package pl.marceen.nurseryqueueapi.gdansknurseryteam.control;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.marceen.nurseryqueueapi.gdansknurseryteam.entity.*;
@@ -16,9 +14,9 @@ import pl.marceen.nurseryqueueapi.network.control.HttpExcecutor;
 import pl.marceen.nurseryqueueapi.network.control.RequestBuilder;
 import pl.marceen.nurseryqueueapi.network.entity.NetworkException;
 
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
+import javax.enterprise.event.Event;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +41,9 @@ public class ConfirmationProcessorTest {
 
     @Mock
     private HttpExcecutor<OrderResponse> httpExcecutor;
+
+    @Mock
+    private Event<ConfirmationSucceededEvent> confirmationSucceededEvent;
 
     @InjectMocks
     private ConfirmationProcessor sut;
@@ -72,5 +73,6 @@ public class ConfirmationProcessorTest {
 
         //then
         verify(httpExcecutor).execute(OrderResponse.class, httpClient, request);
+        verify(confirmationSucceededEvent).fire(any(ConfirmationSucceededEvent.class));
     }
 }
